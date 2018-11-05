@@ -55,7 +55,8 @@ public class PlayLineController : MonoBehaviour {
             playLeftFlag = false;
 			beatCount = 0;
 			xpos = startPos;
-		}
+            transform.position = new Vector3(xpos, 0, 0); //set to start pos
+        }
             
 
         // if in play mode, update Player Line
