@@ -44,7 +44,7 @@ public class paintGM : MonoBehaviour {
 	void Update () {
 		
 		//get mouse info no matter what
-		Vector3 mousePosition = new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 10.0f);
+		Vector3 mousePosition = new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 1.0f);
         Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
 
 		// use mouse position as drawing point

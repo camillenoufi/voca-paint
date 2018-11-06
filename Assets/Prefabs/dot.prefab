@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 114958837859344886}
   - component: {fileID: 135115733904582084}
   - component: {fileID: 54373505527805974}
+  - component: {fileID: 122946798405824054}
   m_Layer: 9
   m_Name: dot
   m_TagString: colorDot
@@ -69,6 +70,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60b90e96524db4daa9b9f28b454a80c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!122 &122946798405824054
+Halo:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1143716182224540}
+  m_Enabled: 1
+  m_Color:
+    serializedVersion: 2
+    rgba: 4291100669
+  m_Size: 1
 --- !u!135 &135115733904582084
 SphereCollider:
   m_ObjectHideFlags: 1
