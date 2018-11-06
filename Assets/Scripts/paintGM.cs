@@ -44,19 +44,22 @@ public class paintGM : MonoBehaviour {
 	void Update () {
 		
 		//get mouse info no matter what
-		Vector2 mousePosition = new Vector2 (Input.mousePosition.x, Input.mousePosition.y);
-        Vector2 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+		Vector3 mousePosition = new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 10.0f);
+        Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
 
 		// use mouse position as drawing point
 		if (Input.GetKey(mouseLeft)) 
 		{
 			Instantiate(baseDot,objPosition,baseDot.rotation);
+			baseDot.tag = "colorDot";
 		}
 		// get voice input and use as drawing point
 		else if (toolType == "adc" && Input.GetKey(spaceBar)) 
 		{
-			Vector2 voicePosition = new Vector2(objPosition.x, SetPitch2YPosition());
+			Vector3 voicePosition = new Vector3(PlayLineController.xpos, SetPitch2YPosition(), objPosition.z);
+            currentColor = new Color32(100,100,180,255);
 			Instantiate(baseDot, voicePosition, baseDot.rotation);
+			baseDot.tag = "voiceDot";
 		}
 	}
 

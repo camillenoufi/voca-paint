@@ -19,7 +19,7 @@ public class colorPicker : MonoBehaviour {
 	{
 		paintGM.currentColor = GetComponent<SpriteRenderer>().color;
 		//Debug.Log(paintGM.currentColor);
-		paintGM.currentOrder += 1;
+		//paintGM.currentOrder += 1;
 
         SetHaloRender(true);
     }

@@ -18,15 +18,24 @@ public class dotControl : MonoBehaviour {
 
 	void OnMouseOver()
 	{
-		if(paintGM.toolType == "scissors")
+		if(paintGM.toolType == "eraser")
 			Destroy(gameObject);
 	}
 
     void OnTriggerEnter(Collider other) //turn on halo
     {
-        if (other.gameObject.CompareTag("Player"))
+        Debug.Log("something happened");
+		if (other.gameObject.CompareTag("Player"))
         {
-            //based on dot color
+            Debug.Log("collision with player");
+			if (gameObject.CompareTag("voiceDot"))
+			{
+				Debug.Log("voice Dot collide");
+			}
+			if (gameObject.CompareTag("colorDot"))
+			{
+				Debug.Log("color Dot collide");
+			}
         }
     }
 }

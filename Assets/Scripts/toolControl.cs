@@ -12,9 +12,9 @@ public class toolControl : MonoBehaviour {
 
 	void OnMouseDown() 
 	{
-		if(gameObject.name == "scissors") 
+		if(gameObject.name == "eraser") 
 		{
-            paintGM.toolType = "scissors";
+            paintGM.toolType = "eraser";
             //Debug.Log("scissor selected");
         }
         if (gameObject.name == "pencil")
@@ -40,12 +40,12 @@ public class toolControl : MonoBehaviour {
         if (gameObject.name == "tempoUp")
         {
             PlayLineController.currentTempo += 5.0f;
-            //Debug.Log("pencil selected");
+            Debug.Log("tempoUp selected");
         }
         if (gameObject.name == "tempoDown")
         {
             PlayLineController.currentTempo -= 5.0f;
-            //Debug.Log("pencil selected");
+            Debug.Log("tempoDown selected");
         }
         SetHaloRender(true);
         

@@ -10,17 +10,18 @@ public class PlayLineController : MonoBehaviour {
     public KeyCode playUp;
     public KeyCode playDown;
 	public KeyCode stopPlay;
+	public KeyCode spaceBar;
 	public float canvasWidth;
     public static float currentTempo = 80.0f; //bpm
+    public static float xpos;
 
     // chuck sync stuff
     private ChuckSubInstance myChuck;
     private ChuckEventListener myNextBeatListener;
-	private float beatCount = 0;
+	public static float beatCount = 0;
 	private bool beatFlag = false;
 	private bool playRightFlag = false;
 	private bool playLeftFlag = false;
-    private float xpos;
 	private float startPos;
 	
 	// Use this for initialization
@@ -49,7 +50,7 @@ public class PlayLineController : MonoBehaviour {
 			playRightFlag = false;
 		}
 		// if not, reset
-		else if (Input.GetKeyDown(stopPlay)) 
+		else if (Input.GetKeyDown(stopPlay) || Input.GetKeyUp(spaceBar)) 
 		{
             playRightFlag = false;
             playLeftFlag = false;
@@ -59,13 +60,15 @@ public class PlayLineController : MonoBehaviour {
         }
             
 
-        // if in play mode, update Player Line
-		if (playRightFlag || playLeftFlag && beatFlag) 
+        // if in play mode or record mode, update xposition
+		if (playRightFlag || playLeftFlag || Input.GetKey(spaceBar) && beatFlag) 
 		{
 			xpos = (beatCount % canvasWidth - canvasWidth / 2.0f);
-			Debug.Log(xpos);
-			transform.position = new Vector3(xpos, 0, 0); //set to playline
-			beatFlag = false;
+            //Debug.Log(xpos);
+            beatFlag = false;
+
+			if (playRightFlag || playLeftFlag)
+				transform.position = new Vector3(xpos, 0, 0); //update player line
 		}
 		
 	}
@@ -75,9 +78,9 @@ public class PlayLineController : MonoBehaviour {
 		beatFlag = true;
         if (playLeftFlag) //move playline to the left 1/16th beat
             beatCount--;
-        else if (playRightFlag) //move playline to the right 1/16th beat
+        else if (playRightFlag || Input.GetKey(spaceBar)) //move current beat to the right 1/16th beat
             beatCount++;
-		Debug.Log(beatCount);
+		//Debug.Log(beatCount);
     }
 
 
