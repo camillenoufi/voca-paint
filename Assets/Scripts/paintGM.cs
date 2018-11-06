@@ -8,12 +8,17 @@ public class paintGM : MonoBehaviour {
 	public Transform baseDot;
 	public KeyCode mouseLeft;
 	public KeyCode spaceBar;
+	public float canvasWidthIn;
+	public float canvasHeightIn;
 
-	// PUBLIC VARIABLES FOR OTHER CLASSES TO ACCESS
+    // PUBLIC VARIABLES FOR OTHER CLASSES TO ACCESS
+    public static float canvasWidth;
+    public static float canvasHeight;
 	public static string toolType; //what tool is being utilized
 	public static Color currentColor;
 	public static int currentOrder;
 	public static float currentScale = 2.0f;
+	public static string currentTag;
 
     //PRIVATE VARIABLES
 	private float midiNote;
@@ -30,7 +35,9 @@ public class paintGM : MonoBehaviour {
     // Use this for initialization
     void Start () 
 	{
-        midiNote = 60;
+        canvasWidth = canvasWidthIn;
+		canvasHeight = canvasHeightIn;
+		midiNote = 60;
         yPosPrev = yPos;
 
         // set up chuck
@@ -44,23 +51,27 @@ public class paintGM : MonoBehaviour {
 	void Update () {
 		
 		//get mouse info no matter what
-		Vector3 mousePosition = new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 1.0f);
+		Vector3 mousePosition = new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 10.0f);
         Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
 
-		// use mouse position as drawing point
-		if (Input.GetKey(mouseLeft)) 
+		//if mouse is over the canvas
+		if(Mathf.Abs(objPosition.x) < canvasWidth/2.0f && Mathf.Abs(objPosition.y) < canvasHeight/2.0f) 
 		{
-			Instantiate(baseDot,objPosition,baseDot.rotation);
-			baseDot.tag = "colorDot";
+            // use mouse position as drawing point
+			if (Input.GetKey(mouseLeft))
+            {
+				Instantiate(baseDot, objPosition, baseDot.rotation);
+            }
+            // get voice input and use as drawing point
+            else if (toolType == "adc" && Input.GetKey(spaceBar))
+            {
+                Vector3 voicePosition = new Vector3(PlayLineController.xpos, SetPitch2YPosition(), objPosition.z);
+                currentColor = new Color32(100, 100, 180, 255);
+				Instantiate(baseDot, voicePosition, baseDot.rotation);
+                
+            }
 		}
-		// get voice input and use as drawing point
-		else if (toolType == "adc" && Input.GetKey(spaceBar)) 
-		{
-			Vector3 voicePosition = new Vector3(PlayLineController.xpos, SetPitch2YPosition(), objPosition.z);
-            currentColor = new Color32(100,100,180,255);
-			Instantiate(baseDot, voicePosition, baseDot.rotation);
-			baseDot.tag = "voiceDot";
-		}
+		
 	}
 
 	float SetPitch2YPosition()

@@ -11,7 +11,6 @@ public class PlayLineController : MonoBehaviour {
     public KeyCode playDown;
 	public KeyCode stopPlay;
 	public KeyCode spaceBar;
-	public float canvasWidth;
     public static float currentTempo = 80.0f; //bpm
     public static float xpos;
 
@@ -26,7 +25,7 @@ public class PlayLineController : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-        startPos = -1*canvasWidth/2.0f;
+        startPos = -1*paintGM.canvasWidth/2.0f;
 		xpos = startPos;
         myChuck = GetComponent<ChuckSubInstance>();
         SetupChuckClock();
@@ -63,7 +62,7 @@ public class PlayLineController : MonoBehaviour {
         // if in play mode or record mode, update xposition
 		if (playRightFlag || playLeftFlag || Input.GetKey(spaceBar) && beatFlag) 
 		{
-			xpos = (beatCount % canvasWidth - canvasWidth / 2.0f);
+			xpos = (beatCount % paintGM.canvasWidth - paintGM.canvasWidth / 2.0f);
             //Debug.Log(xpos);
             beatFlag = false;
 

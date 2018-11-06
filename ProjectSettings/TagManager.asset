@@ -4,8 +4,12 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - voiceDot
-  - colorDot
+  - adc
+  - green
+  - pink
+  - yellow
+  - orange
+  - blue
   layers:
   - Default
   - TransparentFX

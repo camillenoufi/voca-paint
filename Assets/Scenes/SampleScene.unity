@@ -155,6 +155,7 @@ GameObject:
   - component: {fileID: 35077538}
   - component: {fileID: 35077537}
   - component: {fileID: 35077541}
+  - component: {fileID: 35077542}
   m_Layer: 5
   m_Name: yellow
   m_TagString: Untagged
@@ -255,6 +256,17 @@ Halo:
     serializedVersion: 2
     rgba: 4278776817
   m_Size: 1
+--- !u!114 &35077542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 35077536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74db2606f272c4d34851c052774bb9c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &209037571
 GameObject:
   m_ObjectHideFlags: 0
@@ -310,6 +322,7 @@ GameObject:
   - component: {fileID: 219626238}
   - component: {fileID: 219626237}
   - component: {fileID: 219626236}
+  - component: {fileID: 219626240}
   m_Layer: 5
   m_Name: blue
   m_TagString: Untagged
@@ -410,6 +423,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &219626240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 219626234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74db2606f272c4d34851c052774bb9c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &224432087
 GameObject:
   m_ObjectHideFlags: 0
@@ -531,6 +555,8 @@ MonoBehaviour:
   baseDot: {fileID: 4786065281281158, guid: 01426395e8155445da09a69bdff813ab, type: 2}
   mouseLeft: 323
   spaceBar: 32
+  canvasWidthIn: 64
+  canvasHeightIn: 32
 --- !u!4 &257881963
 Transform:
   m_ObjectHideFlags: 0
@@ -1660,6 +1686,7 @@ GameObject:
   - component: {fileID: 1424775513}
   - component: {fileID: 1424775512}
   - component: {fileID: 1424775514}
+  - component: {fileID: 1424775515}
   m_Layer: 5
   m_Name: pink
   m_TagString: Untagged
@@ -1760,6 +1787,17 @@ Halo:
     serializedVersion: 2
     rgba: 4294508799
   m_Size: 1
+--- !u!114 &1424775515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1424775509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74db2606f272c4d34851c052774bb9c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1425756987
 GameObject:
   m_ObjectHideFlags: 0
@@ -2128,7 +2166,6 @@ MonoBehaviour:
   playDown: 274
   stopPlay: 13
   spaceBar: 32
-  canvasWidth: 64
 --- !u!114 &1627415162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2264,6 +2301,7 @@ GameObject:
   - component: {fileID: 1676710159}
   - component: {fileID: 1676710158}
   - component: {fileID: 1676710157}
+  - component: {fileID: 1676710161}
   m_Layer: 5
   m_Name: orange
   m_TagString: Untagged
@@ -2364,6 +2402,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1676710161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1676710155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74db2606f272c4d34851c052774bb9c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1930716790
 GameObject:
   m_ObjectHideFlags: 0
@@ -2451,6 +2500,7 @@ GameObject:
   - component: {fileID: 2098283601}
   - component: {fileID: 2098283600}
   - component: {fileID: 2098283602}
+  - component: {fileID: 2098283603}
   m_Layer: 5
   m_Name: green
   m_TagString: Untagged
@@ -2551,3 +2601,14 @@ Halo:
     serializedVersion: 2
     rgba: 4292276542
   m_Size: 1
+--- !u!114 &2098283603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2098283597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74db2606f272c4d34851c052774bb9c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
