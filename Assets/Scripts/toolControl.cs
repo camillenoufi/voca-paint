@@ -7,8 +7,29 @@ public class toolControl : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-        SetHaloRender(false);
+        SetThisHaloRender(false);
 	}
+
+    void Update()
+    {
+        
+        if (paintGM.toolType == "brush") 
+        {
+            SetOtherHaloRender("eraser", false);
+            SetOtherHaloRender("adc", false);
+        }
+        if (paintGM.toolType == "adc")
+        {
+            SetOtherHaloRender("eraser", false);
+            SetOtherHaloRender("brush", false);
+        }
+        if (paintGM.toolType == "eraser")
+        {
+            SetOtherHaloRender("brush", false);
+            SetOtherHaloRender("adc", false);
+        }
+        
+    }
 
 	void OnMouseDown() 
 	{
@@ -16,19 +37,27 @@ public class toolControl : MonoBehaviour {
         SetStrokeScale(gameObject.name);
         SetTempo(gameObject.name);
         
-        SetHaloRender(true);
+        SetThisHaloRender(true);
         
 
 	}
 
     void OnMouseUp()
     {
-        SetHaloRender(false);
+        if(paintGM.toolType != "eraser" 
+            && paintGM.toolType != "brush" 
+            && paintGM.toolType != "adc")
+                SetThisHaloRender(false);
     }
 
-    void SetHaloRender(bool state)
+    void SetThisHaloRender(bool state)
     {
         Component halo = gameObject.GetComponent("Halo");
+        halo.GetType().GetProperty("enabled").SetValue(halo, state, null);
+    }
+    void SetOtherHaloRender(string name, bool state)
+    {
+        Component halo = GameObject.Find(name).GetComponent("Halo");
         halo.GetType().GetProperty("enabled").SetValue(halo, state, null);
     }
 
@@ -37,6 +66,11 @@ public class toolControl : MonoBehaviour {
         if (toolName == "eraser")
         {
             paintGM.toolType = "eraser";
+            //Debug.Log("eraser selected");
+        }
+        if (toolName == "brush")
+        {
+            paintGM.toolType = "brush";
             //Debug.Log("eraser selected");
         }
         if (toolName == "adc")
@@ -62,12 +96,20 @@ public class toolControl : MonoBehaviour {
     {
         if (toolName == "tempoUp")
         {
-            PlayLineController.currentTempo += 5.0f;
+
+            if (PlayLineController.currentTempo < 155.0f) //max tempo 160bpm
+            {
+                PlayLineController.currentTempo += 5.0f;
+            }
             Debug.Log("tempoUp selected");
         }
         if (toolName == "tempoDown")
         {
-            PlayLineController.currentTempo -= 5.0f;
+            if (PlayLineController.currentTempo > 5.0f) //min tempo 5bpm
+            {
+                PlayLineController.currentTempo -= 5.0f;
+            }
+            
             Debug.Log("tempoDown selected");
         }
     }

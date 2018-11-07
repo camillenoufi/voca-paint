@@ -11,7 +11,7 @@ public class PlayLineController : MonoBehaviour {
     public KeyCode playDown;
 	public KeyCode stopPlay;
 	public KeyCode spaceBar;
-    public static float currentTempo = 80.0f; //bpm
+    public static float currentTempo = 60.0f; //bpm
     public static float xpos;
 
     // chuck sync stuff

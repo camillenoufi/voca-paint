@@ -30,6 +30,7 @@ public class paintGM : MonoBehaviour {
     private float yPosPrev = -1;
     private float yPos; //syncer variable
 	private string[] colorTags = new string[] {"adc","pink","green","yellow","orange","blue"};
+	private string initColorTag = "";
 
     // Chuck stuff
     ChuckSubInstance myChuckPitchTrack;
@@ -41,22 +42,36 @@ public class paintGM : MonoBehaviour {
     // Use this for initialization
     void Start () 
 	{
+		InitializePaintPositions();
+		InitializeColorInfo();
+		SetUpChuck();
+	}
+
+	
+	void InitializePaintPositions()
+	{
         canvasWidth = canvasWidthIn;
-		canvasHeight = canvasHeightIn;
-		midiNote = 60;
+        canvasHeight = canvasHeightIn;
+        midiNote = 60;
         yPosPrev = yPos;
-
-		//link colors to sounds, using ColorTags array
-		LinkColorTagToSound();
-
-        // set up chuck
-        myChuckPitchTrack = GetComponent<ChuckSubInstance>();
-        StartChuckPitchTrack(myChuckPitchTrack);
-        myPitchSyncer = gameObject.AddComponent<ChuckFloatSyncer>();
-        myPitchSyncer.SyncFloat(myChuckPitchTrack, "midiPos"); //current instance of chuck is determining pos value
 	}
 	
-	// Update is called once per frame
+	void InitializeColorInfo()
+	{
+        initColorTag = colorTags[3];
+        currentColor = GameObject.Find(initColorTag).GetComponent<SpriteRenderer>().color;
+        currentTag = initColorTag;
+        LinkColorTagToSound(); //link colors to sounds, using ColorTags array
+    }
+	
+	void SetUpChuck()
+	{
+		myChuckPitchTrack = GetComponent<ChuckSubInstance>();
+        myPitchSyncer = gameObject.AddComponent<ChuckFloatSyncer>();
+        myPitchSyncer.SyncFloat(myChuckPitchTrack, "midiPos"); //current instance of chuck is determining pos value
+        StartChuckPitchTrack(myChuckPitchTrack);
+	}
+	
 	void Update () {
 		
 		//get mouse info no matter what
@@ -64,7 +79,9 @@ public class paintGM : MonoBehaviour {
         Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
 
 		//if mouse is over the canvas
-		if(Mathf.Abs(objPosition.x) < canvasWidth/2.0f && Mathf.Abs(objPosition.y) < canvasHeight/2.0f) 
+		if( Mathf.Abs(objPosition.x) < canvasWidth/2.0f 
+			&& Mathf.Abs(objPosition.y) < canvasHeight/2.0f 
+			&& (toolType == "brush" || toolType == "adc") )
 		{
             // use mouse position as drawing point
 			if (Input.GetKey(mouseLeft))
@@ -77,16 +94,13 @@ public class paintGM : MonoBehaviour {
                 Vector3 voicePosition = new Vector3(PlayLineController.xpos, SetPitch2YPosition(), objPosition.z);
                 currentColor = new Color32(100, 100, 180, 255);
 				Instantiate(baseDot, voicePosition, baseDot.rotation);
-
-                
             }
-		}
-		
+		}	
 	}
 
 	void LinkColorTagToSound()
 	{
-        // link color tags to instruments in sound dictionary
+        // link color tags to instruments index value in dictionary
         for(int i = 0; i<colorTags.Length; i++) 
 		{
             soundTags.Add(colorTags[i], i);
@@ -141,7 +155,7 @@ public class paintGM : MonoBehaviour {
 			float target_freq, curr_freq, target_gain, curr_gain;
 			spork ~ ramp_stuff();
 
-			// go for it
+			// run adc tracker indefinitely
 			while( true )
 			{
 				// take fft
@@ -190,23 +204,19 @@ public class paintGM : MonoBehaviour {
 						if (m_cf == m_pf)
 						{
 							count++;
-							if (count >= 10)
+							if (count >= 5)
 							{
-								//curr_freq => s.freq;
-								//0 => s.gain;
 								m_cf => midiPos;
-							//<<< ""Note:"", midiPos >>>; //test to check input       
+								//<<< ""Note:"", midiPos >>>; //test to check input       
 							}
 						}
 						else
 						{
 							0 => count;
-							//0 => s.freq;
-							//0 => s.gain;
 						}
 					}
 					curr_freq => prev_freq;
-					0.0025::second => now;
+					0.0050::second => now;
 				}
 			}
 			
