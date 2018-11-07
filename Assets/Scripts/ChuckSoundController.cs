@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ChuckSoundController : MonoBehaviour {
-
-    //public static float objSoundtype = 1;
 	
 	private ChuckSubInstance myChuck;
     private float midiPos;
@@ -19,14 +17,13 @@ public class ChuckSoundController : MonoBehaviour {
         myChuck.SetFloat("bpm", PlayLineController.currentTempo);
         myChuck.SetFloat("midiNote", midiPos);
         runChuckInstrument();
-		Debug.Log(PlayLineController.currentTempo);
         StartCoroutine(DestroyChuckSound(0.5f));
 	}
 	
 
     float ConvertYPosToMidiNote(float y)
     {
-        float midi = Mathf.Round((2.0f * paintGM.modOperator) - paintGM.modOperatorOffset + y);
+        float midi = Mathf.Round( 2.0f *paintGM.modOperator - paintGM.modOperatorOffset + y);
         return midi;
     }
 
@@ -41,12 +38,40 @@ public class ChuckSoundController : MonoBehaviour {
 
 			if(soundType == 1) //pink
 				playSax(midiNote, .6);
+			
+			else if(soundType == 2) //green
+				playSin(midiNote);
 			else if(soundType == 3) //yellow
 				playSin(midiNote);
+			else if(soundType == 4) //orange
+				playSax2(midiNote, .6);
 			else if(soundType == 5) //blue
 				playSinLPF(midiNote);
 			
+
 			//SOUND FUNCTIONS
+			
+			fun void playSax2(float note, float velocity)
+			{
+				// patch
+				Saxofony sax => JCRev r => dac;
+				.2 => r.gain;
+				.2 => r.mix;
+				// set specs
+				.1 => sax.stiffness;
+				.8 => sax.aperture;
+				.6 => sax.noiseGain;
+				.5 => sax.blowPosition;
+				9 => sax.vibratoFreq;
+				.6 => sax.vibratoGain;
+				.5 => sax.pressure;
+				
+				// start the note
+				Std.mtof(note) => sax.freq;
+				velocity => sax.noteOn;
+				2*T => now;
+			}
+			
 			fun void playSax(float note, float velocity)
 			{
 				// patch
@@ -72,14 +97,14 @@ public class ChuckSoundController : MonoBehaviour {
 			fun void playSin(float note)
 			{
 				SinOsc s1 => HPF hpf => ADSR e => NRev re => dac;
+				0.8 => s1.gain;
 				50 => hpf.freq;
 				.1 => re.gain;
 				.1 => re.mix;
-				e.set( 10::ms, 5::ms, .5, 20::ms );  //(a,d,s height % of freq,r)
+				e.set( 10::ms, 5::ms, .4, 20::ms );  //(a,d,s height % of freq,r)
 				
 				// start the note
 				Std.mtof(note) => s1.freq;
-				s1.gain(setGain(note));
 				e.keyOn();// press the key
 				2*T - e.releaseTime() => now; // play/wait until beginning of release
 				e.keyOff(); //release the key
@@ -88,15 +113,15 @@ public class ChuckSoundController : MonoBehaviour {
 
 			fun void playSinLPF(float note)
 			{
-				SinOsc s1 => LPF lpf => ADSR e => NRev re => dac;
+				SqrOsc s1 => LPF lpf => ADSR e => NRev re => dac;
+				0.5 => s1.gain;
 				500 => lpf.freq;
 				.1 => re.gain;
 				.3 => re.mix;
-				e.set( 30::ms, 5::ms, .5, 20::ms );  //(a,d,s height % of freq,r)
+				e.set( 30::ms, 20::ms, .6, 20::ms );  //(a,d,s height % of freq,r)
 				
 				// start the note
 				Std.mtof(note) => s1.freq;
-				s1.gain(setGain(note));
 				e.keyOn();// press the key
 				2*T - e.releaseTime() => now; // play/wait until beginning of release
 				e.keyOff(); //release the key

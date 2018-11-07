@@ -7,7 +7,6 @@ public class dotControl : MonoBehaviour {
     
    public Transform chuckSound; 
    private IEnumerator coroutine;
-	private float objSoundtype;
     
 	
 	// Use this for initialization
@@ -16,7 +15,6 @@ public class dotControl : MonoBehaviour {
 		GetComponent<SpriteRenderer>().color = paintGM.currentColor;
         GetComponent<SpriteRenderer>().tag = paintGM.currentTag;
         GetComponent<Transform>().localScale = new Vector2(paintGM.currentScale,paintGM.currentScale);
-        objSoundtype = paintGM.soundTags[GetComponent<SpriteRenderer>().tag];
 
         SetHaloRender(false);
 	}
