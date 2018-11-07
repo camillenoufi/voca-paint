@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class dotControl : MonoBehaviour {
 
-    private ChuckSubInstance myChuck;
+    ChuckSubInstance myChuck;
     private IEnumerator coroutine;
 	private float midiPos;
     
@@ -20,6 +20,8 @@ public class dotControl : MonoBehaviour {
         myChuck = GetComponent<ChuckSubInstance>();
         myChuck.SetFloat("soundType", paintGM.soundTags[GetComponent<SpriteRenderer>().tag]);
         myChuck.SetFloat("midiNote", Mathf.Round(midiPos));
+
+		runChuckInstrument();
 
         SetHaloRender(false);
 	}
@@ -41,7 +43,8 @@ public class dotControl : MonoBehaviour {
     {	
 		if (other.gameObject.CompareTag("Player"))
         {
-            StartCoroutine(runChuckSubInstance());
+            myChuck.SetFloat("bpm", PlayLineController.currentTempo);
+			StartCoroutine(TriggerChuck(0.05f));
             StartCoroutine(HaloOnOff(2.0f));
         }
     }
@@ -59,20 +62,20 @@ public class dotControl : MonoBehaviour {
         halo.GetType().GetProperty("enabled").SetValue(halo, state, null);
     }
 
-    private IEnumerator runChuckSubInstance()
+    private IEnumerator TriggerChuck(float waitTime)
     {
-        runChuckInstrument();
-        yield return new WaitForSeconds(0.0f);
+        myChuck.SetFloat("go", 1.0f);
+		yield return new WaitForSeconds(waitTime);
+        myChuck.SetFloat("go", 0.0f);
     }
 
 	void runChuckInstrument()
 	{
-        myChuck.SetFloat("bpm", PlayLineController.currentTempo);
-
         myChuck.RunCode(@"
 			global float bpm;
 			global float midiNote;
 			global float soundType;
+			global float go;
 			0.99*(60.0/bpm)/4.0 => float timeStep;
 
 			Saxofony sax;
@@ -106,16 +109,24 @@ public class dotControl : MonoBehaviour {
 				6 => sax.vibratoFreq;
 				.5 => sax.vibratoGain;
 				.5 => sax.pressure;
-				
-				play1(midiNote, .6);
 			}
 			else
 			{
 				s1 => NRev re => dac;
 				.1 => re.gain;
 				.1 => re.mix;
+			}
 
-				play2to5(midiNote);
+			while(true) 
+			{
+				if (go==1.0) 
+				{
+					<<<go>>>;
+					if (soundType==1)
+						play1(midiNote, .6);
+					else
+						play2to5(midiNote);
+				}
 			}
 			
 			//SOUND FUNCTIONS
@@ -124,14 +135,14 @@ public class dotControl : MonoBehaviour {
 				// start the note
 				Std.mtof(note) => sax.freq;
 				velocity => sax.noteOn;
-				(4*timeStep)::second => now;
+				(2*timeStep)::second => now;
 			}
 
 			fun void play2to5(float note)
 			{
 				// start the note
 				Std.mtof(note) => s1.freq;
-				(4*timeStep)::second => now;
+				(2*timeStep)::second => now;
 			}
 
 			fun float setGain(float note)
