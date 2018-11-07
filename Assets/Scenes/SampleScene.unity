@@ -155,7 +155,6 @@ GameObject:
   - component: {fileID: 35077538}
   - component: {fileID: 35077537}
   - component: {fileID: 35077541}
-  - component: {fileID: 35077542}
   m_Layer: 5
   m_Name: yellow
   m_TagString: Untagged
@@ -256,17 +255,6 @@ Halo:
     serializedVersion: 2
     rgba: 4278776817
   m_Size: 1
---- !u!114 &35077542
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 35077536}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74db2606f272c4d34851c052774bb9c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &209037571
 GameObject:
   m_ObjectHideFlags: 0
@@ -308,7 +296,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &219626234
 GameObject:
@@ -322,7 +310,6 @@ GameObject:
   - component: {fileID: 219626238}
   - component: {fileID: 219626237}
   - component: {fileID: 219626236}
-  - component: {fileID: 219626240}
   m_Layer: 5
   m_Name: blue
   m_TagString: Untagged
@@ -423,17 +410,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &219626240
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 219626234}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74db2606f272c4d34851c052774bb9c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &224432087
 GameObject:
   m_ObjectHideFlags: 0
@@ -460,7 +436,7 @@ MeshCollider:
   m_GameObject: {fileID: 224432087}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Convex: 0
   m_CookingOptions: 14
@@ -809,7 +785,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 547522212}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.003, y: 0, z: 5}
+  m_LocalPosition: {x: -0.003, y: 0, z: 4}
   m_LocalScale: {x: 12, y: 8, z: 1}
   m_Children: []
   m_Father: {fileID: 224432091}
@@ -830,7 +806,7 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 540bf54c868bb4375bc582d9e466d306, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -996,8 +972,8 @@ Halo:
   m_Enabled: 1
   m_Color:
     serializedVersion: 2
-    rgba: 4294705407
-  m_Size: 2
+    rgba: 4294959103
+  m_Size: 4
 --- !u!1 &737026301
 GameObject:
   m_ObjectHideFlags: 0
@@ -1188,12 +1164,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 780443204}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 1.9386625, y: -1.0704958, z: -0.4230238}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &960317991
 GameObject:
@@ -1224,8 +1200,8 @@ Halo:
   m_Enabled: 1
   m_Color:
     serializedVersion: 2
-    rgba: 4287648080
-  m_Size: 0
+    rgba: 4294823372
+  m_Size: 7
 --- !u!61 &960317993
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1341,6 +1317,7 @@ GameObject:
   m_Component:
   - component: {fileID: 975148426}
   - component: {fileID: 975148427}
+  - component: {fileID: 975148428}
   m_Layer: 5
   m_Name: palette
   m_TagString: Untagged
@@ -1413,6 +1390,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!122 &975148428
+Halo:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 975148425}
+  m_Enabled: 1
+  m_Color:
+    serializedVersion: 2
+    rgba: 4286611584
+  m_Size: 10
 --- !u!1 &1214280108
 GameObject:
   m_ObjectHideFlags: 0
@@ -1442,7 +1430,7 @@ Halo:
   m_Color:
     serializedVersion: 2
     rgba: 4290547071
-  m_Size: 1.2
+  m_Size: 2
 --- !u!61 &1214280110
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1686,7 +1674,6 @@ GameObject:
   - component: {fileID: 1424775513}
   - component: {fileID: 1424775512}
   - component: {fileID: 1424775514}
-  - component: {fileID: 1424775515}
   m_Layer: 5
   m_Name: pink
   m_TagString: Untagged
@@ -1787,17 +1774,6 @@ Halo:
     serializedVersion: 2
     rgba: 4294508799
   m_Size: 1
---- !u!114 &1424775515
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1424775509}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74db2606f272c4d34851c052774bb9c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1425756987
 GameObject:
   m_ObjectHideFlags: 0
@@ -1963,7 +1939,7 @@ Halo:
   m_Color:
     serializedVersion: 2
     rgba: 4290547071
-  m_Size: 1.2
+  m_Size: 2
 --- !u!61 &1528176601
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2301,7 +2277,6 @@ GameObject:
   - component: {fileID: 1676710159}
   - component: {fileID: 1676710158}
   - component: {fileID: 1676710157}
-  - component: {fileID: 1676710161}
   m_Layer: 5
   m_Name: orange
   m_TagString: Untagged
@@ -2402,17 +2377,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1676710161
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1676710155}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74db2606f272c4d34851c052774bb9c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1930716790
 GameObject:
   m_ObjectHideFlags: 0
@@ -2457,7 +2421,7 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 540bf54c868bb4375bc582d9e466d306, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2500,7 +2464,6 @@ GameObject:
   - component: {fileID: 2098283601}
   - component: {fileID: 2098283600}
   - component: {fileID: 2098283602}
-  - component: {fileID: 2098283603}
   m_Layer: 5
   m_Name: green
   m_TagString: Untagged
@@ -2601,14 +2564,3 @@ Halo:
     serializedVersion: 2
     rgba: 4292276542
   m_Size: 1
---- !u!114 &2098283603
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2098283597}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74db2606f272c4d34851c052774bb9c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

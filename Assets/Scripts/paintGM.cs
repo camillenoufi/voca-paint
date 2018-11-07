@@ -10,6 +10,7 @@ public class paintGM : MonoBehaviour {
 	public KeyCode spaceBar;
 	public float canvasWidthIn;
 	public float canvasHeightIn;
+	
 
     // PUBLIC VARIABLES FOR OTHER CLASSES TO ACCESS
     public static float canvasWidth;
@@ -19,11 +20,16 @@ public class paintGM : MonoBehaviour {
 	public static int currentOrder;
 	public static float currentScale = 2.0f;
 	public static string currentTag;
+	public static float modOperator = 30.0f;
+	public static float modOperatorOffset = -15.0f;
+
+    public static Dictionary<string, int> soundTags = new Dictionary<string, int>();
 
     //PRIVATE VARIABLES
 	private float midiNote;
     private float yPosPrev = -1;
     private float yPos; //syncer variable
+	private string[] colorTags = new string[] {"adc","pink","green","yellow","orange","blue"};
 
     // Chuck stuff
     ChuckSubInstance myChuckPitchTrack;
@@ -39,6 +45,9 @@ public class paintGM : MonoBehaviour {
 		canvasHeight = canvasHeightIn;
 		midiNote = 60;
         yPosPrev = yPos;
+
+		//link colors to sounds, using ColorTags array
+		LinkColorTagToSound();
 
         // set up chuck
         myChuckPitchTrack = GetComponent<ChuckSubInstance>();
@@ -68,10 +77,20 @@ public class paintGM : MonoBehaviour {
                 Vector3 voicePosition = new Vector3(PlayLineController.xpos, SetPitch2YPosition(), objPosition.z);
                 currentColor = new Color32(100, 100, 180, 255);
 				Instantiate(baseDot, voicePosition, baseDot.rotation);
+
                 
             }
 		}
 		
+	}
+
+	void LinkColorTagToSound()
+	{
+        // link color tags to instruments in sound dictionary
+        for(int i = 0; i<colorTags.Length; i++) 
+		{
+            soundTags.Add(colorTags[i], i);
+		}
 	}
 
 	float SetPitch2YPosition()
@@ -92,7 +111,7 @@ public class paintGM : MonoBehaviour {
 
 	float MapPitchToYPosition(float midiNote) 
 	{
-		return (midiNote % 30.0f - 15.0f);
+		return (midiNote % modOperator + modOperatorOffset);
 	}
 
     // ChucK pitch tracking script contained here

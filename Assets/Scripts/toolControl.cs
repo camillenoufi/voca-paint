@@ -15,7 +15,7 @@ public class toolControl : MonoBehaviour {
         SetToolType(gameObject.name);
         SetStrokeScale(gameObject.name);
         SetTempo(gameObject.name);
-        SetColorTag(gameObject.name);
+        
         SetHaloRender(true);
         
 
@@ -73,9 +73,4 @@ public class toolControl : MonoBehaviour {
     }
     
     //if tags or gameobject names are changed and don't match, this will not work!!
-    void SetColorTag(string toolName)
-    {
-        paintGM.currentTag = toolName;
-        Debug.Log(paintGM.currentTag);
-    }
 }

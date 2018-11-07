@@ -18,9 +18,9 @@ public class colorPicker : MonoBehaviour {
 	void OnMouseDown() 
 	{
 		paintGM.currentColor = GetComponent<SpriteRenderer>().color;
-		//Debug.Log(paintGM.currentColor);
-		//paintGM.currentOrder += 1;
-
+        //Debug.Log(paintGM.currentColor);
+        //paintGM.currentOrder += 1;
+        SetColorTag(gameObject.name);
         SetHaloRender(true);
     }
 
@@ -28,6 +28,12 @@ public class colorPicker : MonoBehaviour {
 	{
         SetHaloRender(false);
 
+    }
+
+    void SetColorTag(string toolName)
+    {
+        paintGM.currentTag = toolName;
+        //Debug.Log(paintGM.currentTag);
     }
 
 	void SetHaloRender(bool state) 

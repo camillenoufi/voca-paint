@@ -477,7 +477,7 @@ public class ChuckSubInstance : MonoBehaviour
         // find one in TheChuck
         if( chuckMainInstance == null )
         {
-            chuckMainInstance = TheChuck.instance;
+            chuckMainInstance = GameObject.Find("TheChuck").GetComponent<ChuckMainInstance>(); //TheChuck.instance;
         }
 
         // unity getting stuff
