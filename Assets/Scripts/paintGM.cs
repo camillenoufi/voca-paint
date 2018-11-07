@@ -22,6 +22,7 @@ public class paintGM : MonoBehaviour {
 	public static string currentTag;
 	public static float modOperator = 30.0f;
 	public static float modOperatorOffset = -15.0f;
+	public static int numTriggersHappened = 0;
 
     public static Dictionary<string, int> soundTags = new Dictionary<string, int>();
 
@@ -31,11 +32,12 @@ public class paintGM : MonoBehaviour {
     private float yPos; //syncer variable
 	private string[] colorTags = new string[] {"adc","pink","green","yellow","orange","blue"};
 	private string initColorTag = "";
+	private Vector3 prevPos = new Vector3 (0.0f,0.0f,0.0f);
 
     // Chuck stuff
-    ChuckSubInstance myChuckPitchTrack;
-    ChuckFloatSyncer myPitchSyncer;
-    ChuckFloatSyncer myTimeSyncer;
+    private ChuckSubInstance myChuckPitchTrack;
+    private ChuckFloatSyncer myPitchSyncer;
+    private ChuckFloatSyncer myAdcSyncer;
 
 
 
@@ -69,7 +71,9 @@ public class paintGM : MonoBehaviour {
 		myChuckPitchTrack = GetComponent<ChuckSubInstance>();
         myPitchSyncer = gameObject.AddComponent<ChuckFloatSyncer>();
         myPitchSyncer.SyncFloat(myChuckPitchTrack, "midiPos"); //current instance of chuck is determining pos value
-        StartChuckPitchTrack(myChuckPitchTrack);
+        myAdcSyncer = gameObject.AddComponent<ChuckFloatSyncer>();
+        myAdcSyncer.SyncFloat(myChuckPitchTrack, "adcOnFlag");
+		//StartChuckPitchTrack(myChuckPitchTrack);
 	}
 	
 	void Update () {
@@ -77,25 +81,34 @@ public class paintGM : MonoBehaviour {
 		//get mouse info no matter what
 		Vector3 mousePosition = new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 10.0f);
         Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+		//snap to xcoord grid
+		objPosition.x = Mathf.Round(objPosition.x);
+		if (Mathf.Round(objPosition.x) == Mathf.Round(prevPos.x)) //vertical line
+			objPosition.y = Mathf.Round(objPosition.y);
 
-		//if mouse is over the canvas
-		if( Mathf.Abs(objPosition.x) < canvasWidth/2.0f 
-			&& Mathf.Abs(objPosition.y) < canvasHeight/2.0f 
-			&& (toolType == "brush" || toolType == "adc") )
+		//if mouse is over the canvas and clicked down
+		if( Input.GetKey(mouseLeft)
+			&& Mathf.Abs(objPosition.x) < canvasWidth/2.0f 
+			&& Mathf.Abs(objPosition.y) < canvasHeight/2.0f
+            && objPosition != prevPos
+			&& toolType == "brush" )
 		{
             // use mouse position as drawing point
-			if (Input.GetKey(mouseLeft))
-            {
-				Instantiate(baseDot, objPosition, baseDot.rotation);
-            }
-            // get voice input and use as drawing point
-            else if (toolType == "adc" && Input.GetKey(spaceBar))
-            {
-                Vector3 voicePosition = new Vector3(PlayLineController.xpos, SetPitch2YPosition(), objPosition.z);
-                currentColor = new Color32(100, 100, 180, 255);
-				Instantiate(baseDot, voicePosition, baseDot.rotation);
-            }
-		}	
+			Instantiate(baseDot, objPosition, baseDot.rotation);
+			//keep track of previous placement
+			prevPos = objPosition;
+		}
+        else if (toolType == "adc" && Input.GetKey(spaceBar))
+        {
+            myAdcSyncer.SetNewValue(1.0f);
+            Vector3 voicePosition = new Vector3(PlayLineController.xpos + 1, SetPitch2YPosition(), objPosition.z);
+            currentColor = new Color32(100, 100, 180, 255);
+            Instantiate(baseDot, voicePosition, baseDot.rotation);
+        }
+        else
+        {
+            myAdcSyncer.SetNewValue(0.0f);
+        }
 	}
 
 	void LinkColorTagToSound()
@@ -119,7 +132,6 @@ public class paintGM : MonoBehaviour {
         {
             yPosPrev = yPos;
         }
-		Debug.Log(yPos);
 		return yPos;
 	}
 
@@ -135,6 +147,8 @@ public class paintGM : MonoBehaviour {
         myChuckPitchTrack.RunCode(@"
 
 			60.0 => global float midiPos;
+			1.0 => global float adcOnFlag;
+
 			
 			// analysis
 			adc => PoleZero dcblock => FFT fft => blackhole;
@@ -154,7 +168,7 @@ public class paintGM : MonoBehaviour {
 			// interpolate
 			float target_freq, curr_freq, target_gain, curr_gain;
 			spork ~ ramp_stuff();
-
+			
 			// run adc tracker indefinitely
 			while( true )
 			{

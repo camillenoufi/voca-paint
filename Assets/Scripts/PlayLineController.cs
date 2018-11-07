@@ -11,23 +11,24 @@ public class PlayLineController : MonoBehaviour {
     public KeyCode playDown;
 	public KeyCode stopPlay;
 	public KeyCode spaceBar;
-    public static float currentTempo = 60.0f; //bpm
+    public static bool playRightFlag = false;
+    public static bool playLeftFlag = false;
+    public static float currentTempo = 120.0f; //bpm
     public static float xpos;
+    public static float beatCount = 0;
+	
 
     // chuck sync stuff
     private ChuckSubInstance myChuck;
     private ChuckEventListener myNextBeatListener;
-	public static float beatCount = 0;
+    private ChuckFloatSyncer myTempoSyncer;
 	private bool beatFlag = false;
-	private bool playRightFlag = false;
-	private bool playLeftFlag = false;
 	private float startPos;
 	
 	// Use this for initialization
 	void Start () {
         startPos = -1*paintGM.canvasWidth/2.0f;
 		xpos = startPos;
-        myChuck = GetComponent<ChuckSubInstance>();
         SetupChuckClock();
 	}
 	
@@ -35,7 +36,7 @@ public class PlayLineController : MonoBehaviour {
 	void Update () 
 	{
         //update tempo
-		myChuck.SetFloat("bpm", currentTempo);
+		myTempoSyncer.SetNewValue(currentTempo);
         
 		//check if play keys have been hit
 		if (Input.GetKeyDown(playRight)) 
@@ -63,7 +64,6 @@ public class PlayLineController : MonoBehaviour {
 		if (playRightFlag || playLeftFlag || Input.GetKey(spaceBar) && beatFlag) 
 		{
 			xpos = (beatCount % paintGM.canvasWidth - paintGM.canvasWidth / 2.0f);
-            //Debug.Log(xpos);
             beatFlag = false;
 
 			if (playRightFlag || playLeftFlag)
@@ -79,13 +79,14 @@ public class PlayLineController : MonoBehaviour {
             beatCount--;
         else if (playRightFlag || Input.GetKey(spaceBar)) //move current beat to the right 1/16th beat
             beatCount++;
-		//Debug.Log(beatCount);
     }
 
 
     void SetupChuckClock()
     {
-        myChuck.RunCode(@"
+        myChuck = GetComponent<ChuckSubInstance>();
+
+		myChuck.RunCode(@"
 			80 => global float bpm;
 			//global float beatPos;
 			global Event beatNotifier;
@@ -99,7 +100,9 @@ public class PlayLineController : MonoBehaviour {
 			}
 		");
 
-        myNextBeatListener = gameObject.AddComponent<ChuckEventListener>();
+        myTempoSyncer = gameObject.AddComponent<ChuckFloatSyncer>();
+		myTempoSyncer.SyncFloat(myChuck, "bpm");
+		myNextBeatListener = gameObject.AddComponent<ChuckEventListener>();
         myNextBeatListener.ListenForEvent(myChuck, "beatNotifier", ProcessBeat);
     }
 }

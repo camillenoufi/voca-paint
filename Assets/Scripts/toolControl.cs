@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class toolControl : MonoBehaviour {
 	
-	// Use this for initialization
+	public static bool playButtonFlag = false;
+    public static bool stopButtonFlag = false;
+    
+    // Use this for initialization
 	void Start () 
 	{
         SetThisHaloRender(false);
@@ -13,20 +16,27 @@ public class toolControl : MonoBehaviour {
     void Update()
     {
         
-        if (paintGM.toolType == "brush") 
+        switch (paintGM.toolType)
         {
-            SetOtherHaloRender("eraser", false);
-            SetOtherHaloRender("adc", false);
-        }
-        if (paintGM.toolType == "adc")
-        {
-            SetOtherHaloRender("eraser", false);
-            SetOtherHaloRender("brush", false);
-        }
-        if (paintGM.toolType == "eraser")
-        {
-            SetOtherHaloRender("brush", false);
-            SetOtherHaloRender("adc", false);
+            case "brush":
+            {
+                SetOtherHaloRender("eraser", false);
+                SetOtherHaloRender("adc", false);
+                break;
+            }
+        
+            case "adc":
+            {
+                SetOtherHaloRender("eraser", false);
+                SetOtherHaloRender("brush", false);
+                break;
+            }
+            case "eraser":
+            {
+                SetOtherHaloRender("brush", false);
+                SetOtherHaloRender("adc", false);
+                break;
+            }
         }
         
     }
@@ -36,7 +46,7 @@ public class toolControl : MonoBehaviour {
         SetToolType(gameObject.name);
         SetStrokeScale(gameObject.name);
         SetTempo(gameObject.name);
-        
+        SetPlayback(gameObject.name);
         SetThisHaloRender(true);
         
 
@@ -44,9 +54,9 @@ public class toolControl : MonoBehaviour {
 
     void OnMouseUp()
     {
-        if(paintGM.toolType != "eraser" 
+        if( paintGM.toolType != "eraser" 
             && paintGM.toolType != "brush" 
-            && paintGM.toolType != "adc")
+            && paintGM.toolType != "adc" )
                 SetThisHaloRender(false);
     }
 
@@ -66,17 +76,14 @@ public class toolControl : MonoBehaviour {
         if (toolName == "eraser")
         {
             paintGM.toolType = "eraser";
-            //Debug.Log("eraser selected");
         }
-        if (toolName == "brush")
+        else if (toolName == "brush")
         {
             paintGM.toolType = "brush";
-            //Debug.Log("eraser selected");
         }
-        if (toolName == "adc")
+        else if (toolName == "adc")
         {
             paintGM.toolType = "adc";
-            //Debug.Log("adc selected");
         }
     }
     void SetStrokeScale(string toolName)
@@ -84,12 +91,10 @@ public class toolControl : MonoBehaviour {
         if (toolName == "sizeUp")
         {
             paintGM.currentScale += 1.0f;
-            //Debug.Log("pencil selected");
         }
         if (toolName == "sizeDown")
         {
             paintGM.currentScale -= 1.0f;
-            //Debug.Log("pencil selected");
         }
     }
     void SetTempo(string toolName)
@@ -101,7 +106,6 @@ public class toolControl : MonoBehaviour {
             {
                 PlayLineController.currentTempo += 5.0f;
             }
-            Debug.Log("tempoUp selected");
         }
         if (toolName == "tempoDown")
         {
@@ -110,9 +114,19 @@ public class toolControl : MonoBehaviour {
                 PlayLineController.currentTempo -= 5.0f;
             }
             
-            Debug.Log("tempoDown selected");
         }
     }
-    
-    //if tags or gameobject names are changed and don't match, this will not work!!
+
+    void SetPlayback(string toolName) 
+    {
+        if (toolName == "playButton")
+            PlayLineController.playRightFlag = true;
+            SetOtherHaloRender("stopButton", false);
+        if (toolName == "stopButton")
+        {
+            PlayLineController.playRightFlag = false;
+            PlayLineController.playLeftFlag = false;
+            SetOtherHaloRender("playButton", false);
+        }
+    }
 }

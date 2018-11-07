@@ -82,6 +82,7 @@
      <Compile Include="Assets\Chunity\Scripts\Utility\ChuckIntSyncer.cs" />
      <Compile Include="Assets\Chunity\Scripts\Utility\ChuckStringSyncer.cs" />
      <Compile Include="Assets\Chunity\Scripts\Utility\TheChuck.cs" />
+     <Compile Include="Assets\Scripts\ChuckSoundController.cs" />
      <Compile Include="Assets\Scripts\colorPicker.cs" />
      <Compile Include="Assets\Scripts\dotControl.cs" />
      <Compile Include="Assets\Scripts\paintGM.cs" />

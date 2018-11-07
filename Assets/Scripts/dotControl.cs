@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class dotControl : MonoBehaviour {
 
-    ChuckSubInstance myChuck;
-    private IEnumerator coroutine;
-	private float midiPos;
+    
+   public Transform chuckSound; 
+   private IEnumerator coroutine;
+	private float objSoundtype;
     
 	
 	// Use this for initialization
@@ -15,22 +16,9 @@ public class dotControl : MonoBehaviour {
 		GetComponent<SpriteRenderer>().color = paintGM.currentColor;
         GetComponent<SpriteRenderer>().tag = paintGM.currentTag;
         GetComponent<Transform>().localScale = new Vector2(paintGM.currentScale,paintGM.currentScale);
-        midiPos = ConvertYPosToMidiNote(gameObject.transform.position.y);
-
-        myChuck = GetComponent<ChuckSubInstance>();
-        myChuck.SetFloat("soundType", paintGM.soundTags[GetComponent<SpriteRenderer>().tag]);
-        myChuck.SetFloat("midiNote", Mathf.Round(midiPos));
-
-		runChuckInstrument();
+        objSoundtype = paintGM.soundTags[GetComponent<SpriteRenderer>().tag];
 
         SetHaloRender(false);
-	}
-
-
-	float ConvertYPosToMidiNote(float y)
-	{
-		float midi = Mathf.Round((2.0f * paintGM.modOperator) - paintGM.modOperatorOffset + y);
-		return midi;
 	}
 
 	void OnMouseOver()
@@ -43,9 +31,9 @@ public class dotControl : MonoBehaviour {
     {	
 		if (other.gameObject.CompareTag("Player"))
         {
-            myChuck.SetFloat("bpm", PlayLineController.currentTempo);
-			StartCoroutine(TriggerChuck(0.05f));
-            StartCoroutine(HaloOnOff(2.0f));
+            chuckSound.tag = gameObject.GetComponent<SpriteRenderer>().tag;
+            Instantiate(chuckSound, gameObject.transform.position, gameObject.transform.rotation);
+            StartCoroutine(HaloOnOff(3.0f));
         }
     }
 
@@ -61,99 +49,4 @@ public class dotControl : MonoBehaviour {
         Component halo = gameObject.GetComponent("Halo");
         halo.GetType().GetProperty("enabled").SetValue(halo, state, null);
     }
-
-    private IEnumerator TriggerChuck(float waitTime)
-    {
-        myChuck.SetFloat("go", 1.0f);
-		yield return new WaitForSeconds(waitTime);
-        myChuck.SetFloat("go", 0.0f);
-    }
-
-	void runChuckInstrument()
-	{
-        myChuck.RunCode(@"
-			global float bpm;
-			global float midiNote;
-			global float soundType;
-			global float go;
-			0.99*(60.0/bpm)/4.0 => float timeStep;
-
-			Saxofony sax;
-			SinOsc s1;
-			TriOsc s2;
-			SinOsc s3;
-			SinOsc s4;
-
-			<<<soundType>>>;
-			
-			// SET SPECS based on sound type (check paintGM.colorTags[] for change in length/list of options)
-			if(soundType == 0) //voice
-			{
-				s1 => NRev re => dac;
-				.5 => re.gain;
-				.8 => re.mix;
-
-				play2to5(midiNote);
-			}
-			else if(soundType == 1)
-			{
-				// patch
-				sax => JCRev r => dac;
-				.1 => r.gain;
-				.2 => r.mix;
-				// set specs
-				.5 => sax.stiffness;
-				.5 => sax.aperture;
-				.5 => sax.noiseGain;
-				.5 => sax.blowPosition;
-				6 => sax.vibratoFreq;
-				.5 => sax.vibratoGain;
-				.5 => sax.pressure;
-			}
-			else
-			{
-				s1 => NRev re => dac;
-				.1 => re.gain;
-				.1 => re.mix;
-			}
-
-			while(true) 
-			{
-				if (go==1.0) 
-				{
-					<<<go>>>;
-					if (soundType==1)
-						play1(midiNote, .6);
-					else
-						play2to5(midiNote);
-				}
-			}
-			
-			//SOUND FUNCTIONS
-			fun void play1(float note, float velocity)
-			{
-				// start the note
-				Std.mtof(note) => sax.freq;
-				velocity => sax.noteOn;
-				(2*timeStep)::second => now;
-			}
-
-			fun void play2to5(float note)
-			{
-				// start the note
-				Std.mtof(note) => s1.freq;
-				(2*timeStep)::second => now;
-			}
-
-			fun float setGain(float note)
-			{
-				return ( 0.05 + (note/127.0)/4 ); //max gain at 0.3
-			}
-			
-
-		");
-
-		//Debug.Log("ran chuck code");
-
-	}
 }
