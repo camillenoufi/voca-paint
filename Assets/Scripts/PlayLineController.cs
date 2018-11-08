@@ -13,7 +13,7 @@ public class PlayLineController : MonoBehaviour {
 	public KeyCode spaceBar;
     public static bool playRightFlag = false;
     public static bool playLeftFlag = false;
-    public static float currentTempo = 80.0f; //bpm
+    public static float currentTempo = 60.0f; //bpm
     public static float xpos;
     public static float beatCount = 0;
 	

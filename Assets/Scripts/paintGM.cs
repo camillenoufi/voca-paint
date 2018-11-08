@@ -95,9 +95,10 @@ public class paintGM : MonoBehaviour {
 		{
             // use mouse position as drawing point
 			Instantiate(baseDot, objPosition, baseDot.rotation);
-			//keep track of previous placement
-			prevPos = objPosition;
+            //keep track of previous placement
+            prevPos = objPosition;
 		}
+
         else if (toolType == "adc" && Input.GetKey(spaceBar))
         {
             myAdcSyncer.SetNewValue(1.0f);
