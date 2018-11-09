@@ -5,17 +5,12 @@ using UnityEngine;
 public class PlayLineController : MonoBehaviour {
 
     // Public variables
-	public KeyCode playLeft;
-    public KeyCode playRight;
-    public KeyCode playUp;
-    public KeyCode playDown;
-	public KeyCode stopPlay;
-	public KeyCode spaceBar;
+	public KeyCode playLeft, playRight, stopPlay, spaceBar;
     public static bool playRightFlag = false;
     public static bool playLeftFlag = false;
-    public static float currentTempo = 60.0f; //bpm
     public static float xpos;
-    public static float beatCount = 0;
+    public static float currentTempo = 80.0f; //bpm
+    public static float beatCount = 0.0f;
 	
 
     // chuck sync stuff
@@ -61,10 +56,11 @@ public class PlayLineController : MonoBehaviour {
             
 
         // if in play mode or record mode, update xposition
-		if (playRightFlag || playLeftFlag || Input.GetKey(spaceBar) && beatFlag) 
+		if ( playRightFlag || playLeftFlag || Input.GetKey(spaceBar) 
+				&& beatFlag ) 
 		{
-			xpos = (beatCount % paintGM.canvasWidth - paintGM.canvasWidth / 2.0f);
             beatFlag = false;
+			xpos = beatCount%paintGM.canvasWidth - paintGM.canvasWidth/2.0f;
 
 			if (playRightFlag || playLeftFlag)
 				transform.position = new Vector3(xpos, 0, 0); //update player line
@@ -75,6 +71,7 @@ public class PlayLineController : MonoBehaviour {
     void ProcessBeat()
     {
 		beatFlag = true;
+        Debug.Log(beatFlag);
         if (playLeftFlag) //move playline to the left 1/16th beat
             beatCount--;
         else if (playRightFlag || Input.GetKey(spaceBar)) //move current beat to the right 1/16th beat
@@ -87,15 +84,13 @@ public class PlayLineController : MonoBehaviour {
         myChuck = GetComponent<ChuckSubInstance>();
 
 		myChuck.RunCode(@"
-			80 => global float bpm;
+			80.0 => global float bpm;
 			//global float beatPos;
 			global Event beatNotifier;
-			float timeStep;
 			
 			while( true )
 			{
-				(60.0/bpm)/4.0 => timeStep; //convert bpm to timestep and find 16th note interval
-				timeStep::second => now;
+				(15.0/bpm)::second => now; //increment by 16th note interval
 				beatNotifier.broadcast();
 			}
 		");

@@ -2204,7 +2204,7 @@ MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1627415156}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -2266,8 +2266,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playLeft: 276
   playRight: 275
-  playUp: 273
-  playDown: 274
   stopPlay: 13
   spaceBar: 32
 --- !u!114 &1627415162
