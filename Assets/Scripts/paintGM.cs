@@ -6,38 +6,29 @@ public class paintGM : MonoBehaviour {
 
 	// PUBLIC EDITABLE VARIABLES (in unity editor)
 	public Transform baseDot;
-	public KeyCode mouseLeft;
-	public KeyCode spaceBar;
-	public float canvasWidthIn;
-	public float canvasHeightIn;
+	public KeyCode mouseLeft, spaceBar;
+	public float canvasWidthIn, canvasHeightIn;
 	
 
     // PUBLIC VARIABLES FOR OTHER CLASSES TO ACCESS
-    public static float canvasWidth;
-    public static float canvasHeight;
-	public static string toolType; //what tool is being utilized
+    public static float canvasWidth, canvasHeight;
+	public static string toolType, currentTag; //what tool is being utilized, current dot-tool tag
 	public static Color currentColor;
-	public static int currentOrder;
 	public static float currentScale = 2.0f;
-	public static string currentTag;
 	public static float modOperator = 30.0f;
 	public static float modOperatorOffset = -15.0f;
-	public static int numTriggersHappened = 0;
 
     public static Dictionary<string, int> soundTags = new Dictionary<string, int>();
 
     //PRIVATE VARIABLES
-	private float midiNote;
-    private float yPosPrev = -1;
-    private float yPos; //syncer variable
+	private float yPosPrev, yPos; //prev synced variable to compare, syncer variable
+    private Vector3 prevPos = new Vector3(0.0f, 0.0f, 0.0f);
 	private string[] colorTags = new string[] {"adc","pink","green","yellow","orange","blue"};
 	private string initColorTag = "";
-	private Vector3 prevPos = new Vector3 (0.0f,0.0f,0.0f);
 
     // Chuck stuff
     private ChuckSubInstance myChuckPitchTrack;
-    private ChuckFloatSyncer myPitchSyncer;
-    private ChuckFloatSyncer myAdcSyncer;
+    private ChuckFloatSyncer myPitchSyncer, myAdcSyncer;
 
 
 
@@ -54,7 +45,6 @@ public class paintGM : MonoBehaviour {
 	{
         canvasWidth = canvasWidthIn;
         canvasHeight = canvasHeightIn;
-        midiNote = 60;
         yPosPrev = yPos;
 	}
 	
@@ -83,14 +73,14 @@ public class paintGM : MonoBehaviour {
         Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
 		//snap to xcoord grid
 		objPosition.x = Mathf.Round(objPosition.x);
-		if (Mathf.Round(objPosition.x) == Mathf.Round(prevPos.x)) //vertical line
+		if (objPosition.x == prevPos.x) //vertical line
 			objPosition.y = Mathf.Round(objPosition.y);
 
 		//if mouse is over the canvas and clicked down
 		if( Input.GetKey(mouseLeft)
 			&& Mathf.Abs(objPosition.x) < canvasWidth/2.0f 
 			&& Mathf.Abs(objPosition.y) < canvasHeight/2.0f
-            && objPosition != prevPos
+            && (objPosition.x != prevPos.x && Mathf.Round(objPosition.y) != Mathf.Round(prevPos.y))
 			&& toolType == "brush" )
 		{
             // use mouse position as drawing point
@@ -116,23 +106,16 @@ public class paintGM : MonoBehaviour {
 	{
         // link color tags to instruments index value in dictionary
         for(int i = 0; i<colorTags.Length; i++) 
-		{
             soundTags.Add(colorTags[i], i);
-		}
 	}
 
 	float SetPitch2YPosition()
 	{
-        midiNote = myPitchSyncer.GetCurrentValue();
-        yPos = MapPitchToYPosition(midiNote);
-        if ((yPos < yPosPrev - 13.0f) | (yPos > yPosPrev + 13.0f)) //try to correct for pitch
-        {
+        yPos = MapPitchToYPosition(myPitchSyncer.GetCurrentValue());
+        if ((yPos < yPosPrev - 12.0f) | (yPos > yPosPrev + 12.0f)) //try to correct for >octave errors
             yPos = yPosPrev;
-        }
         else
-        {
             yPosPrev = yPos;
-        }
 		return yPos;
 	}
 

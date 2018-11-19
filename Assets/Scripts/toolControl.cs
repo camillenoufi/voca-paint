@@ -90,11 +90,11 @@ public class toolControl : MonoBehaviour {
     {
         if (toolName == "sizeUp")
         {
-            paintGM.currentScale += 1.0f;
+            paintGM.currentScale *= 1.1f;
         }
         if (toolName == "sizeDown")
         {
-            paintGM.currentScale -= 1.0f;
+            paintGM.currentScale *= 0.9f;
         }
     }
     void SetTempo(string toolName)

@@ -36,7 +36,7 @@ public class ChuckSoundController : MonoBehaviour {
     {
         myChuck.RunCode(@"
 			global float bpm, midiNote, soundType;
-			0.99*(60.0/bpm)/4.0 => float timeStep;
+			0.9*15.0/bpm => float timeStep;
 			timeStep::second => dur T;
 
 			if(soundType == 1) //pink
@@ -103,7 +103,7 @@ public class ChuckSoundController : MonoBehaviour {
 				50 => hpf.freq;
 				.5 => re.gain;
 				.1 => re.mix;
-				e.set( 10::ms, 5::ms, .4, 20::ms );  //(a,d,s height % of freq,r)
+				e.set( 10::ms, 5::ms, .9, 20::ms );  //(a,d,s height % of freq,r)
 				
 				// start the note
 				Std.mtof(note) => s1.freq;
@@ -120,7 +120,7 @@ public class ChuckSoundController : MonoBehaviour {
 				500 => lpf.freq;
 				.5 => re.gain;
 				.3 => re.mix;
-				e.set( 30::ms, 20::ms, .6, 20::ms );  //(a,d,s height % of freq,r)
+				e.set( 30::ms, 20::ms, .9, 20::ms );  //(a,d,s height % of freq,r)
 				
 				// start the note
 				Std.mtof(note) => s1.freq;

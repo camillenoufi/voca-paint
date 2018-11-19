@@ -24,7 +24,7 @@ public class PlayLineController : MonoBehaviour {
 	void Start () {
         startPos = -1*paintGM.canvasWidth/2.0f;
 		xpos = startPos;
-        SetupChuckClock();
+        RunChuckClock();
 	}
 	
 	// Update is called once per frame
@@ -60,7 +60,7 @@ public class PlayLineController : MonoBehaviour {
 				&& beatFlag ) 
 		{
             beatFlag = false;
-			xpos = beatCount%paintGM.canvasWidth - paintGM.canvasWidth/2.0f;
+			xpos = beatCount - paintGM.canvasWidth/2.0f; //shift to center around 0
 
 			if (playRightFlag || playLeftFlag)
 				transform.position = new Vector3(xpos, 0, 0); //update player line
@@ -71,15 +71,14 @@ public class PlayLineController : MonoBehaviour {
     void ProcessBeat()
     {
 		beatFlag = true;
-        Debug.Log(beatFlag);
         if (playLeftFlag) //move playline to the left 1/16th beat
-            beatCount--;
+            beatCount = (beatCount - 1.0f) % paintGM.canvasWidth;
         else if (playRightFlag || Input.GetKey(spaceBar)) //move current beat to the right 1/16th beat
-            beatCount++;
+            beatCount = (beatCount + 1.0f) % paintGM.canvasWidth;
     }
 
 
-    void SetupChuckClock()
+    void RunChuckClock()
     {
         myChuck = GetComponent<ChuckSubInstance>();
 
